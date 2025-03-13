@@ -19,7 +19,7 @@ def create_app():
 
     # Registering blueprints
     #from app.routes.claims import claims_bp
-    #from app.routes.customer_risk_prediction.customer_risk_prediction import customer_risk_bp
+    from app.routes.customer_risk_prediction.customer_risk_prediction import customer_risk_bp
     #from app.routes.data_extraction.extract_claim_report_info import extract_bp_claim_report
     #from app.routes.data_extraction.extract_driver_statememt_info import extract_bp_driver_statement
     #from app.routes.data_extraction.extract_inspection_report import extract_bp_inspection_report
@@ -32,7 +32,7 @@ def create_app():
 
 
     #app.register_blueprint(claims_bp, url_prefix='/api/claims')
-    #app.register_blueprint(customer_risk_bp, url_prefix='/api')
+    app.register_blueprint(customer_risk_bp, url_prefix='/api')
     #app.register_blueprint(extract_bp_claim_report, url_prefix='/api')
     #app.register_blueprint(extract_bp_driver_statement, url_prefix='/api')
     #app.register_blueprint(extract_bp_inspection_report, url_prefix='/api')
