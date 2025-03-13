@@ -52,6 +52,9 @@ def create_app():
     from app.routes.vehicle_risk_prediction.prediction_routes import combined_risk_bp
     app.register_blueprint(combined_risk_bp, url_prefix='/api/vehicles')
 
+    from app.routes.vehicle_risk_prediction.claims_risk.prediction_routes import insurance_claims_bp
+    app.register_blueprint(insurance_claims_bp, url_prefix='/api/vehicles')
+
     # Default route for '/'
     @app.route('/')
     def index():
