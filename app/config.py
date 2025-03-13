@@ -1,5 +1,6 @@
 import os
 import joblib
+import logging
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'your_secret_key')
@@ -24,3 +25,15 @@ class Config:
 models = Config.load_models()
 price_model = models['price_model']
 risk_model = models['risk_model']
+
+# Logging Configuration
+LOG_FILE = "app/logs/app.log"
+os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+logger = logging.getLogger(__name__)
