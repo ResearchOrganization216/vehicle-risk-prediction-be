@@ -17,3 +17,4 @@ pydantic
 groq
 requests
 langgraph
+openai
