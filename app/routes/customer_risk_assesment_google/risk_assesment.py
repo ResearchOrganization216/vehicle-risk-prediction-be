@@ -3,7 +3,7 @@ from app.services.customer_risk_assesment_google.risk_assesment import process_r
 
 risk_assessment_bp = Blueprint('risk_assessment_bp', __name__)
 
-@risk_assessment_bp.route('/risk-assessment', methods=['POST'])
+@risk_assessment_bp.route('/risk-assessment-google', methods=['POST'])
 def risk_assessment():
     data = request.json
 
