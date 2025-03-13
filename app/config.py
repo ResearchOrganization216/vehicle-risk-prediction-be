@@ -11,6 +11,7 @@ class Config:
     MODEL_PATHS = {
         'price_model': os.path.join('app', 'models', 'vehicle_risk_prediction','price_model.pkl'),
         'risk_model': os.path.join('app', 'models', 'vehicle_risk_prediction','risk_model.pkl'),
+        'spare_parts_model': os.path.join('app', 'models', 'vehicle_risk_prediction','spare_parts_risk_model_random_search.pkl')
     }
 
     # Load models
@@ -25,6 +26,7 @@ class Config:
 models = Config.load_models()
 price_model = models['price_model']
 risk_model = models['risk_model']
+spare_parts_model = models['spare_parts_model']
 
 # Logging Configuration
 LOG_FILE = "app/logs/app.log"
