@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.utils.vehicle_risk_prediction.claims_risk.validation import validate_insurance_risk_input
-from app.services.vehicle_risk_prediction.claims_risk.prediction import calculate_insurance_risk
+from app.services.vehicle_risk_prediction.claims_risk.prediction_service import calculate_insurance_risk
 from app.config import logger
 
 insurance_claims_bp = Blueprint('insurance_claims', __name__)

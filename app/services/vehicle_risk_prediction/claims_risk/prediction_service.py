@@ -28,7 +28,10 @@ def calculate_insurance_risk(make, model):
 
         if make_filtered_df.empty:
             logger.warning(f"No records found for make: {make}")
-            return None  # No matching make found
+            rank = round(random.uniform(70, 80), 2)  # Assign random rank
+            return {
+                "risk_rank": int(rank)
+            }
 
         # Fuzzy match for Model
         model_choices = make_filtered_df["Model"].unique()
@@ -45,7 +48,7 @@ def calculate_insurance_risk(make, model):
         if best_match:
             matched_row = make_filtered_df[make_filtered_df["Model"] == best_match]
         else:
-            matched_row = pd.DataFrame()  # No good match found
+            matched_row = pd.DataFrame() 
 
         if not matched_row.empty:
             # Check if 'rank' column exists
@@ -53,14 +56,19 @@ def calculate_insurance_risk(make, model):
                 rank = matched_row.iloc[0]["rank"]
             else:
                 logger.warning(f"'rank' column missing for model: {best_match}")
-                return None  
+                rank = round(random.uniform(60, 80), 2)  # Assign random rank
+                return {
+                    "risk_rank": int(rank)
+                } 
         else:
             logger.warning(f"No close model match found for: {model}")
-            return None  
+            rank = round(random.uniform(70, 80), 2)  
+            return {
+                "risk_rank": int(rank)
+            }
 
-        # If rank is above 90%, return a random value between 80 and 90
         if rank >= 90:
-            rank = random.randint(80, 90)
+            rank = round(random.uniform(80, 90), 2)
 
         return {
             "risk_rank": int(rank)
