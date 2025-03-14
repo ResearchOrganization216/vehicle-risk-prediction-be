@@ -89,6 +89,9 @@ def combined_risk():
             if explanation_response.status_code == 200:
                 explanation_result = explanation_response.json()
                 combined_result["explanation"] = explanation_result.get("explanation", "No explanation available")
+                combined_result["total_risk_score"] = explanation_result.get("total_risk_score", "N/A")
+                combined_result["premium_adjustment"] = explanation_result.get("adjusted_premium", "N/A")
+                combined_result["premium_adjustment_percentage"] = explanation_result.get("adjustment_factor", "N/A")
             else:
                 logger.error(f"Lama LLM explanation failed: {explanation_response.text}")
                 combined_result["explanation"] = "Explanation could not be generated."

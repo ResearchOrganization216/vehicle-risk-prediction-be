@@ -13,11 +13,18 @@ def get_lama_explanation():
         risk_data = request.json
         logger.info(f"Received risk data for explanation: {risk_data}")
 
-        # Call the service to generate the LLaMA explanation
-        explanation = generate_lama_explanation(risk_data)
+        # Return the explanation and total risk score in the response
+        explanation, total_risk_score, adjusted_premium, adjustment_factor = generate_lama_explanation(risk_data)
 
-        # Return the explanation in the response
-        return jsonify({"explanation": explanation})
+        # Return the explanation, total risk score, and adjusted premium in the response
+        response = {
+            "explanation": explanation,
+            "total_risk_score": total_risk_score,
+            "adjusted_premium": adjusted_premium,
+            "adjustment_factor": adjustment_factor
+        }
+
+        return jsonify(response)
 
     except Exception as e:
         logger.error(f"Error generating LLaMA explanation: {str(e)}", exc_info=True)
