@@ -92,6 +92,8 @@ def combined_risk():
                 combined_result["total_risk_score"] = explanation_result.get("total_risk_score", "N/A")
                 combined_result["premium_adjustment"] = explanation_result.get("adjusted_premium", "N/A")
                 combined_result["premium_adjustment_percentage"] = explanation_result.get("adjustment_factor", "N/A")
+                combined_result["previous_premium"] = explanation_result.get("previous_premium", "N/A")
+                combined_result["previous_risk"] = explanation_result.get("previous_risk", "N/A")
             else:
                 logger.error(f"Lama LLM explanation failed: {explanation_response.text}")
                 combined_result["explanation"] = "Explanation could not be generated."

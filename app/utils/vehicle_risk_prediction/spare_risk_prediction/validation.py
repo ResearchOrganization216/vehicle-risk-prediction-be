@@ -19,11 +19,20 @@ def validate_spare_parts_risk_input(data):
             return False, f"Invalid '{field_names[field]}', must be a non-empty string."
 
     # Validate year
+    def is_valid_number(value, expected_type=int):
+        """Check if a value is a valid number (int/float) even if it comes as a string."""
+        try:
+            return expected_type(value) if isinstance(value, (int, float, str)) and str(value).strip().isdigit() else None
+        except ValueError:
+            return None
+
     try:
-        data["year"] = int(data["year"])
-        if data["year"] < 1990 or data["year"] > 2024:
-            return False, f"Invalid '{field_names['year']}', must be between 1990 and 2024."
-    except ValueError:
+        # Convert year to an integer safely
+        year = is_valid_number(data["year"], int)
+        if year is None or year < 1990 or year > 2024:
+            return False, f"Invalid '{field_names['year']}', must be an integer between 1990 and 2024."
+        data["year"] = year  # Update the value after conversion
+    except Exception:
         return False, f"Invalid '{field_names['year']}', must be an integer."
 
     return True, "Valid input."

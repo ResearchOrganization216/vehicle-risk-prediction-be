@@ -16,24 +16,35 @@ def validate_input(data):
 
     # Validate data types
     if not isinstance(data["make"], str) or not data["make"].strip():
-        return False, f"Invalid '{field_names['make']}', must be a non-empty string."
+        return False, f"Invalid '{field_names['make']}' or missing"
     if not isinstance(data["model"], str) or not data["model"].strip():
-        return False, f"Invalid '{field_names['model']}', must be a non-empty string."
+        return False, f"Invalid '{field_names['model']}'or missing"
     if not isinstance(data["vehicle_type"], str) or not data["vehicle_type"].strip():
-        return False, f"Invalid '{field_names['vehicle_type']}', must be a non-empty string."
+        return False, f"Invalid '{field_names['vehicle_type']}' or missing"
+
+    def is_valid_number(value, expected_type=int):
+        """Check if a value is a valid number (int/float) even if it comes as a string."""
+        try:
+            return expected_type(value) if isinstance(value, (int, float, str)) and str(value).strip().isdigit() else None
+        except ValueError:
+            return None
 
     try:
-        data["year"] = int(data["year"])
-        if data["year"] < 1990 or data["year"] > 2024:
-            return False, f"Invalid '{field_names['year']}', must be between 1990 and 2024."
-    except ValueError:
-        return False, f"Invalid '{field_names['year']}', must be an integer."
+        # Convert year to an integer safely
+        year = is_valid_number(data["year"], int)
+        if year is None or year < 1990 or year > 2024:
+            return False, f"Invalid '{field_names['year']}', must be an year between 1990 and 2024."
+        data["year"] = year  # Update the value after conversion
+    except Exception:
+        return False, f"Invalid '{field_names['year']}', must be an year."
 
     try:
-        data["mileage"] = float(data["mileage"])
-        if data["mileage"] < 0:
+        # Convert mileage to a float safely
+        mileage = is_valid_number(data["mileage"], int)
+        if mileage is None or mileage < 0:
             return False, f"Invalid '{field_names['mileage']}', must be a positive number."
-    except ValueError:
+        data["mileage"] = mileage  # Update the value after conversion
+    except Exception:
         return False, f"Invalid '{field_names['mileage']}', must be a number."
 
     return True, "Valid input."

@@ -14,14 +14,16 @@ def get_lama_explanation():
         logger.info(f"Received risk data for explanation: {risk_data}")
 
         # Return the explanation and total risk score in the response
-        explanation, total_risk_score, adjusted_premium, adjustment_factor = generate_lama_explanation(risk_data)
+        explanation, total_risk_score, adjusted_premium, adjustment_factor, previous_premium, previous_risk = generate_lama_explanation(risk_data)
 
         # Return the explanation, total risk score, and adjusted premium in the response
         response = {
             "explanation": explanation,
             "total_risk_score": total_risk_score,
             "adjusted_premium": adjusted_premium,
-            "adjustment_factor": adjustment_factor
+            "adjustment_factor": adjustment_factor,
+            "previous_premium": previous_premium,
+            "previous_risk": previous_risk
         }
 
         return jsonify(response)

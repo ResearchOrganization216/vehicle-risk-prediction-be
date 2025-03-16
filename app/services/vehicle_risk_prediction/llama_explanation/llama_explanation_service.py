@@ -128,7 +128,7 @@ def generate_lama_explanation(risk_data):
         adjusted_premium, adjustment_factor = calculate_premium_adjustment(total_risk_score)
 
         # Return the explanation, total risk score, and adjusted premium in the response
-        return explanation, total_risk_score, adjusted_premium, adjustment_factor
+        return explanation, total_risk_score, adjusted_premium, adjustment_factor, previous_premium, previous_risk_score
 
     except Exception as e:
         logger.error(f"Error generating LLaMA explanation: {str(e)}", exc_info=True)
