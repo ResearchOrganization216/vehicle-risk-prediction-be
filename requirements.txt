@@ -19,3 +19,4 @@ requests
 langgraph
 openai
 rapidfuzz
+pytest

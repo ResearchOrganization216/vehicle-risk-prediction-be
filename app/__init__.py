@@ -6,19 +6,24 @@ from flask_cors import CORS
 db = SQLAlchemy()
 migrate = Migrate()
 
-def create_app():
+def create_app(testing=False): 
     app = Flask(__name__)
 
-    # Loading configuration
+    # Load configuration
     app.config.from_object('app.config.Config')
 
-    # Initializing extensions
+    # Enable testing mode if specified
+    if testing:
+        app.config["TESTING"] = True
+        app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+        app.config["WTF_CSRF_ENABLED"] = False  
+
+    # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
     CORS(app)
 
-    # Registering blueprints
-    #routes for vehicle risk prediction
+    # Register blueprints
     from app.routes.vehicle_risk_prediction.price_risk_prediction.prediction_routes import prediction_bp
     app.register_blueprint(prediction_bp, url_prefix='/api/vehicles/price')
 
