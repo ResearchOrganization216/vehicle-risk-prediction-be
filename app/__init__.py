@@ -6,40 +6,38 @@ from flask_cors import CORS
 db = SQLAlchemy()
 migrate = Migrate()
 
-def create_app():
+def create_app(testing=False): 
     app = Flask(__name__)
 
-    # Loading configuration
+    # Load configuration
     app.config.from_object('app.config.Config')
 
-    # Initializing extensions
+    # Enable testing mode if specified
+    if testing:
+        app.config["TESTING"] = True
+        app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+        app.config["WTF_CSRF_ENABLED"] = False  
+
+    # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
     CORS(app)
 
-    # Registering blueprints
-    from app.routes.customer_risk_prediction.customer_risk_prediction import customer_risk_bp
-    #from app.routes.data_extraction.extract_claim_report_info import extract_bp_claim_report
-    #from app.routes.data_extraction.extract_driver_statememt_info import extract_bp_driver_statement
-    #from app.routes.data_extraction.extract_inspection_report import extract_bp_inspection_report
-    #from app.routes.document_classification.document_classification import document_classification_bp
-    #from app.routes.document_classification.extract_document_classification import extract_bp_document_classification
-    #from app.routes.customer_risk_assesment_google.risk_assesment import risk_assessment_bp
-    from app.routes.customer_risk_agent.risk_routes import risk_bp
-    from app.routes.customer_risk_assesment_llama.risk_assesment_llama import risk_assesment_llama_bp
-    from app.routes.customer_risk_assesment_openai.risk_assesment_openai import risk_assessment_openai_bp
+    # Register blueprints
+    from app.routes.vehicle_risk_prediction.price_risk_prediction.prediction_routes import prediction_bp
+    app.register_blueprint(prediction_bp, url_prefix='/api/vehicles/price')
 
+    from app.routes.vehicle_risk_prediction.spare_risk_prediction.prediction_routes import spare_parts_risk_bp
+    app.register_blueprint(spare_parts_risk_bp, url_prefix='/api/vehicles/spare-parts')
 
-    app.register_blueprint(customer_risk_bp, url_prefix='/api')
-    #app.register_blueprint(extract_bp_claim_report, url_prefix='/api')
-    #app.register_blueprint(extract_bp_driver_statement, url_prefix='/api')
-    #app.register_blueprint(extract_bp_inspection_report, url_prefix='/api')
-    #app.register_blueprint(document_classification_bp, url_prefix='/api') #new route for document classification using opencv
-    #app.register_blueprint(extract_bp_document_classification, url_prefix='/api') #new route for document classification using LLM
-    #app.register_blueprint(risk_assessment_bp, url_prefix='/api') #new route for risk assesment using LLM
-    app.register_blueprint(risk_bp, url_prefix='/api') #new route for risk assesment using Agent
-    app.register_blueprint(risk_assesment_llama_bp, url_prefix='/api') #new route for risk assesment using
-    app.register_blueprint(risk_assessment_openai_bp, url_prefix='/api') #new route for risk assesment using OpenAI
+    from app.routes.vehicle_risk_prediction.prediction_routes import combined_risk_bp
+    app.register_blueprint(combined_risk_bp, url_prefix='/api/vehicles')
+
+    from app.routes.vehicle_risk_prediction.claims_risk.prediction_routes import insurance_claims_bp
+    app.register_blueprint(insurance_claims_bp, url_prefix='/api/vehicles')
+
+    from app.routes.vehicle_risk_prediction.llama_explanation.explanation import lama_explanation_bp
+    app.register_blueprint(lama_explanation_bp, url_prefix='/api/vehicles')
 
     # Default route for '/'
     @app.route('/')

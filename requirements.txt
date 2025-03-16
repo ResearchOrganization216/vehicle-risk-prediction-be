@@ -18,3 +18,5 @@ groq
 requests
 langgraph
 openai
+rapidfuzz
+pytest
