@@ -2,15 +2,25 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
+import os
+
+from app.config import DevelopmentConfig, ProductionConfig
 
 db = SQLAlchemy()
 migrate = Migrate()
 
-def create_app(testing=False): 
+def create_app(config_name=os.getenv('ENVIRONMENT', 'development'), testing=False): 
     app = Flask(__name__)
 
     # Load configuration
     app.config.from_object('app.config.Config')
+
+    if config_name == "development":
+        app.config.from_object(DevelopmentConfig)
+    elif config_name == "production":
+        app.config.from_object(ProductionConfig)
+    else:
+        app.config.from_object(DevelopmentConfig)
 
     # Enable testing mode if specified
     if testing:

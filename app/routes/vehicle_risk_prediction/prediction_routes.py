@@ -20,7 +20,7 @@ def combined_risk():
             return jsonify({"error": message}), 400
 
         # Prepare API endpoints
-        base_url = "http://localhost:5000/api/vehicles"  
+        base_url = current_app.config['BASE_URL'] 
 
         # Vehicle Market Price Prediction
         price_risk_data = {
