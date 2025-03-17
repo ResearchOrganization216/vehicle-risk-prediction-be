@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: vehicle-risk-prediction
-          image: your-docker-image:tag # Replace with your actual Docker image name
+          image: asia-southeast1-docker.pkg.dev/innoainsure-project/innoainsure-be/vehicle-risk-prediction:latest # Replace with your actual Docker image name
           ports:
             - containerPort: 5005
           env:
@@ -27,7 +27,7 @@ spec:
             - name: DEV_BASE_URL
               value: "http://localhost:5000/api/vehicles"
             - name: PROD_BASE_URL
-              value: "https://www.example.com"
+              value: "http://35.186.148.98"
             - name: MAIL_USERNAME
               value: "nisal.nn24@gmail.com"
             - name: MAIL_PASSWORD
