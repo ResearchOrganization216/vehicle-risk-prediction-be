@@ -3,9 +3,6 @@ import joblib
 import logging
 
 class Config:
-    SECRET_KEY = os.getenv('SECRET_KEY', 'your_secret_key')
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'postgresql://postgres:password@db:5432/mydatabase')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Paths to models
     MODEL_PATHS = {
@@ -13,6 +10,15 @@ class Config:
         'risk_model': os.path.join('app', 'models', 'vehicle_risk_prediction','risk_model.pkl'),
         'spare_parts_model': os.path.join('app', 'models', 'vehicle_risk_prediction','spare_parts_risk_model_random_search.pkl')
     }
+
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:password@34.142.175.163:5432/InnoAInsure'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    BUCKET_NAME = "innoainsure-project-bucket" 
+     # For local development, provide a key file; in production, you can set this to an empty string or None.
+    #KEY_PATH = "C:\\Users\\Sithija\\Documents\\keyfiles\\innoainsure-project-531bfaa81104.json"
+    KEY_PATH = ""  # Set to an empty string in production
+    PROJECT_ID = "innoainsure-project"
+    SECRET_KEY = 'your-very-secret-key'
 
     # Load models
     @staticmethod
