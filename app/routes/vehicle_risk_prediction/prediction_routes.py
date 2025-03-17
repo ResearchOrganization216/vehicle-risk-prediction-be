@@ -21,6 +21,7 @@ def combined_risk():
 
         # Prepare API endpoints
         base_url = current_app.config['BASE_URL'] 
+        print(base_url)
 
         # Vehicle Market Price Prediction
         price_risk_data = {
