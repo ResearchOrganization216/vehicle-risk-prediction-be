@@ -3,6 +3,7 @@ import requests
 from flask import Blueprint, request, jsonify, current_app
 from app.utils.vehicle_risk_prediction.price_risk_prediction.validation import validate_input
 from app.config import logger
+import os
 
 combined_risk_bp = Blueprint('combined_risk', __name__)
 
@@ -20,8 +21,7 @@ def combined_risk():
             return jsonify({"error": message}), 400
 
         # Prepare API endpoints
-        base_url = current_app.config['BASE_URL'] 
-        print(base_url)
+        base_url = "http://35.186.148.98:5005/api/vehicles"
 
         # Vehicle Market Price Prediction
         price_risk_data = {
