@@ -1,3 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vehicle-risk-prediction
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vehicle-risk-prediction
+  template:
+    metadata:
+      labels:
+        app: vehicle-risk-prediction
+    spec:
+      containers:
+        - name: vehicle-risk-prediction
+          image: your-docker-image:tag # Replace with your actual Docker image name
+          ports:
+            - containerPort: 5005
+          env:
+            - name: GOOGLE_API_KEY
+              value: "AIzaSyBMmmpByqYzJIaBfOZde7tRgISeLPtzrWs"
+            - name: GROQ_API_KEY
+              value: "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"
+            - name: OPENAI_API_KEY
+              value: "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"
+            - name: ENVIRONMENT
+              value: "production"
+            - name: DEV_BASE_URL
+              value: "http://localhost:5000/api/vehicles"
+            - name: PROD_BASE_URL
+              value: "https://www.example.com"
+            - name: MAIL_USERNAME
+              value: "nisal.nn24@gmail.com"
+            - name: MAIL_PASSWORD
+              value: "dzfh qkay cavm pysh"
+            - name: MAIL_DEFAULT_SENDER
+              value: "nisal.nn24@gmail.com"
+---
 apiVersion: v1
 kind: Service
 metadata:
