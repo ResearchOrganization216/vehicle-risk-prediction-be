@@ -22,8 +22,6 @@ spec:
               value: "AIzaSyBMmmpByqYzJIaBfOZde7tRgISeLPtzrWs"
             - name: GROQ_API_KEY
               value: "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"
-            - name: OPENAI_API_KEY
-              value: "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"
             - name: ENVIRONMENT
               value: "production"
             - name: DEV_BASE_URL
