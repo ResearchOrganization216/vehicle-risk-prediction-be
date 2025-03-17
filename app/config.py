@@ -27,14 +27,12 @@ class Config:
         for key, path in Config.MODEL_PATHS.items():
             models[key] = joblib.load(path)
         return models
-    
-    BASE_URL = 'http://localhost:5000/api/vehicles'  
 
 class DevelopmentConfig(Config):
-    BASE_URL = os.getenv('DEV_BASE_URL', 'http://localhost:5000/api/vehicles')  # Dev URL
+    BASE_URL = os.getenv('DEV_BASE_URL', 'http://localhost:5005/api/vehicles')  # Dev URL
 
 class ProductionConfig(Config):
-    BASE_URL = os.getenv('PROD_BASE_URL', 'https://prod.api.com/api/vehicles') 
+    BASE_URL = os.getenv('PROD_BASE_URL', 'http://35.186.148.98:5005/api/vehicles')  # Prod URL
 
 # Load models when the app starts
 models = Config.load_models()

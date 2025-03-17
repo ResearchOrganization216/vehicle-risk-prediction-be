@@ -25,9 +25,9 @@ spec:
             - name: ENVIRONMENT
               value: "production"
             - name: DEV_BASE_URL
-              value: "http://localhost:5000/api/vehicles"
+              value: "http://localhost:5005/api/vehicles"
             - name: PROD_BASE_URL
-              value: "http://35.186.148.98/api/vehicles"
+              value: "http://35.186.148.98:5005/api/vehicles"
             - name: MAIL_USERNAME
               value: "nisal.nn24@gmail.com"
             - name: MAIL_PASSWORD
