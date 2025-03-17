@@ -22,6 +22,9 @@ instance/
 *.log
 *.pid
 
+.json
+*.json
+
 # System-specific files
 .DS_Store
 Thumbs.db
