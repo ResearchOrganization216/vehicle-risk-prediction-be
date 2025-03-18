@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from app.utils.vehicle_risk_prediction.claims_risk.validation import validate_insurance_risk_input
 from app.services.vehicle_risk_prediction.claims_risk.prediction_service import calculate_insurance_risk
 from app.config import logger
+from app.services.vehicle_risk_prediction.log_service import save_log
 
 insurance_claims_bp = Blueprint('insurance_claims', __name__)
 
@@ -10,6 +11,8 @@ def insurance_risk():
     try:
         # Parse request data
         data = request.json
+        ip_address = request.remote_addr
+        user_agent = request.headers.get('User-Agent')
         logger.info(f"Received request for insurance risk: {data}")
 
         # Validate input
@@ -27,4 +30,12 @@ def insurance_risk():
 
     except Exception as e:
         logger.error(f"Error during insurance risk calculation: {str(e)}", exc_info=True)
+        save_log(
+            levelname="ERROR",
+            message="Error during insurance risk calculation",
+            ip=ip_address,
+            request_data=data,
+            response_data={"error": str(e)},
+            logged_by=user_agent
+        )
         return jsonify({"error": "Internal server error"}), 500

@@ -1,9 +1,9 @@
-import logging
 import requests
 from flask import Blueprint, request, jsonify, current_app
 from app.utils.vehicle_risk_prediction.price_risk_prediction.validation import validate_input
 from app.config import logger
-import os
+from app.services.vehicle_risk_prediction.log_service import save_log
+
 
 combined_risk_bp = Blueprint('combined_risk', __name__)
 
@@ -22,6 +22,7 @@ def combined_risk():
 
         # Prepare API endpoints
         base_url = "http://35.186.148.98:5005/api/vehicles"
+
 
         # Vehicle Market Price Prediction
         price_risk_data = {
@@ -106,4 +107,10 @@ def combined_risk():
 
     except Exception as e:
         logger.error(f"Error during combined prediction: {str(e)}", exc_info=True)
+        save_log(
+            levelname="ERROR",
+            message="Error during combined prediction",
+            request_data=data,
+            response_data={"error": str(e)}
+        )
         return jsonify({"error": "Internal server error"}), 500

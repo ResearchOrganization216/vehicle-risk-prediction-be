@@ -2,6 +2,7 @@ import logging
 from flask import Blueprint, request, jsonify
 from app.config import logger
 from app.services.vehicle_risk_prediction.llama_explanation.llama_explanation_service import generate_lama_explanation
+from app.services.vehicle_risk_prediction.log_service import save_log
 
 # Initialize the blueprint
 lama_explanation_bp = Blueprint('lama_explanation', __name__)
@@ -11,6 +12,8 @@ def get_lama_explanation():
     try:
         # Get the input data from the request
         risk_data = request.json
+        ip_address = request.remote_addr
+        user_agent = request.headers.get('User-Agent')
         logger.info(f"Received risk data for explanation: {risk_data}")
 
         # Return the explanation and total risk score in the response
@@ -30,4 +33,12 @@ def get_lama_explanation():
 
     except Exception as e:
         logger.error(f"Error generating LLaMA explanation: {str(e)}", exc_info=True)
+        save_log(
+            levelname="ERROR",
+            message="Error generating LLaMA explanation",
+            ip=ip_address,
+            request_data=risk_data,
+            response_data={"error": str(e)},
+            logged_by=user_agent
+        )
         return jsonify({"error": "Failed to generate insurance explanation"}), 500
