@@ -1,5 +1,6 @@
 import logging
 from app.utils.vehicle_risk_prediction.llama_explanation.risk_assesment_utils_llama import get_groq_client
+from app.services.vehicle_risk_prediction.plan_service import get_latest_accepted_plan_by_id
 
 # Initialize the LLaMA client
 client = get_groq_client()
@@ -7,9 +8,7 @@ client = get_groq_client()
 # Configure logging
 logger = logging.getLogger(__name__)
 
-# Dummy previous data (since the database is not connected)
-previous_premium = 158000 
-previous_risk_score = 79.68 
+ 
 
 def calculate_total_risk_score(risk_data):
     weights = {
@@ -33,7 +32,7 @@ def calculate_total_risk_score(risk_data):
     # Return the total risk score
     return round(total_risk_score, 2)
 
-def calculate_premium_adjustment(current_risk_score):
+def calculate_premium_adjustment(current_risk_score,previous_risk_score,previous_premium):
     risk_score_change_percentage = current_risk_score - previous_risk_score
 
     logger.info(f"Risk score change: {risk_score_change_percentage}%")
@@ -59,6 +58,19 @@ def calculate_premium_adjustment(current_risk_score):
     return adjusted_premium, adjustment_factor
 
 def generate_lama_explanation(risk_data):
+
+    id = risk_data.get("user_id") or 0
+
+    # Get the latest accepted plan for the user
+    latest_plan = get_latest_accepted_plan_by_id(id)
+
+    # Extract the previous premium and risk score from the latest plan
+    previous_risk_score = latest_plan['plan']['new_risk']
+    previous_premium = latest_plan['plan']['new_premium']
+
+    #convert string to float
+    previous_risk_score = float(previous_risk_score)
+    previous_premium = float(previous_premium)
 
     risk_score_change_percentage = calculate_total_risk_score(risk_data) - previous_risk_score
     try:
@@ -125,7 +137,7 @@ def generate_lama_explanation(risk_data):
         logger.info(f"Calculated Total Risk Score: {total_risk_score}")
 
         # Calculate premium adjustment
-        adjusted_premium, adjustment_factor = calculate_premium_adjustment(total_risk_score)
+        adjusted_premium, adjustment_factor = calculate_premium_adjustment(total_risk_score,previous_risk_score,previous_premium)
 
         # Return the explanation, total risk score, and adjusted premium in the response
         return explanation, total_risk_score, adjusted_premium, adjustment_factor, previous_premium, previous_risk_score

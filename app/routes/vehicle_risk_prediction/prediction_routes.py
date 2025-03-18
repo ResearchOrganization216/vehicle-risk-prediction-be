@@ -80,7 +80,8 @@ def combined_risk():
             "predicted_claim_risk_rank": predicted_claim_risk_rank,
             "predicted_market_risk_score": predicted_market_risk_score,
             "predicted_price": predicted_price,
-            "predicted_spare_parts_risk_percentage": predicted_spare_parts_risk_percentage
+            "predicted_spare_parts_risk_percentage": predicted_spare_parts_risk_percentage,
+            "user_id": data.get("id", "N/A"),
         }
 
         logger.info(f"Combined prediction successful: {combined_result}")
