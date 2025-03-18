@@ -8,7 +8,7 @@ def save_plan(data):
         # Extract riskData from the input
         risk_data = data.get("riskData", {})
         timestamp = str(data.get("timestamp", datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-        client_id = risk_data.get("client_id") or 0
+        client_id = data.get("id") or 0
 
         plan_entry = PlanEntry(
             user_id=client_id,
