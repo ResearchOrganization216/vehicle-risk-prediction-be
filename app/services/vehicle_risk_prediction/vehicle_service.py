@@ -2,6 +2,8 @@ from app import db
 from app.types.vehicle_model import VehicleEntry 
 from sqlalchemy.exc import SQLAlchemyError
 from app.services.vehicle_risk_prediction.plan_service import get_latest_accepted_plan_by_id
+from app.services.vehicle_risk_prediction.log_service import save_log
+from app.services.vehicle_risk_prediction.policy_service import get_policy_holder_by_user_id
 
 def get_vehicle_by_user_id(user_id):
     try:
@@ -29,6 +31,13 @@ def get_vehicle_by_user_id(user_id):
 
     except SQLAlchemyError as e:
         db.session.rollback()
+        save_log(
+            levelname="ERROR",
+            message="Failed to get vehicles",
+            request_data={"user_id": user_id},
+            response_data={"error": str(e)},
+            logged_by="admin"
+        )
         return {"error": f"An error occurred while fetching vehicles: {str(e)}"}, 500
     
 def get_all_vehicles():
@@ -57,8 +66,20 @@ def get_all_vehicles():
         for vehicle in vehicle_list:
             plan = get_latest_accepted_plan_by_id(vehicle["user_id"])
             vehicle["plan"] = plan
+        
+        #get each user's policy holder
+        for vehicle in vehicle_list:
+            policy_holder = get_policy_holder_by_user_id(vehicle["user_id"])
+            vehicle["policy_holder"] = policy_holder
+            
         return {"vehicles": vehicle_list}, 200
 
     except SQLAlchemyError as e:
         db.session.rollback()
+        save_log(
+            levelname="ERROR",
+            message="Failed to get vehicles",
+            response_data={"error": str(e)},
+            logged_by="admin"
+        )
         return {"error": f"An error occurred while fetching vehicles: {str(e)}"}, 500
