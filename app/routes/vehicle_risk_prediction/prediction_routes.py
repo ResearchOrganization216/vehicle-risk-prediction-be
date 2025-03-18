@@ -109,7 +109,7 @@ def combined_risk():
         logger.error(f"Error during combined prediction: {str(e)}", exc_info=True)
         save_log(
             levelname="ERROR",
-            message="Error during combined prediction",
+            message="Error during combined predictions",
             request_data=data,
             response_data={"error": str(e)}
         )
