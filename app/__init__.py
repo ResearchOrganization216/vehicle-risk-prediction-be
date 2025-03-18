@@ -50,6 +50,9 @@ def create_app(config_name=os.getenv('ENVIRONMENT', 'development'), testing=Fals
     from app.routes.vehicle_risk_prediction.plan_data.handleplan_route import plan_data_bp
     app.register_blueprint(plan_data_bp, url_prefix='/api/vehicles')
 
+    from app.routes.vehicle_risk_prediction.vehicle_route import vehicle_data_bp
+    app.register_blueprint(vehicle_data_bp, url_prefix='/api/vehicles')
+
     # Default route for '/'
     @app.route('/')
     def index():
