@@ -1,6 +1,7 @@
 from app import db
 from app.types.vehicle_model import VehicleEntry 
 from sqlalchemy.exc import SQLAlchemyError
+from app.services.vehicle_risk_prediction.plan_service import get_latest_accepted_plan_by_id
 
 def get_vehicle_by_user_id(user_id):
     try:
@@ -52,6 +53,10 @@ def get_all_vehicles():
                 "vehicle_type": v.vehicle_type
             } for v in vehicles
         ]
+        #get each user's plan latest accepted plan
+        for vehicle in vehicle_list:
+            plan = get_latest_accepted_plan_by_id(vehicle["user_id"])
+            vehicle["plan"] = plan
         return {"vehicles": vehicle_list}, 200
 
     except SQLAlchemyError as e:

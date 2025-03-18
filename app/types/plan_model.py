@@ -17,3 +17,22 @@ class PlanEntry(db.Model):
     created_date = db.Column(db.DateTime, default=datetime.utcnow)  # Creation time
     created_by = db.Column(db.String(50)) # User who created the plan
 
+    def to_dict(self):
+        """
+        Convert the PlanEntry object to a dictionary.
+        """
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "previous_risk": str(self.previous_risk),  # Convert numeric fields to string if needed
+            "previous_premium": str(self.previous_premium),
+            "new_risk": str(self.new_risk),
+            "new_premium": str(self.new_premium),
+            "premium_adjustment_percentage": self.premium_adjustment_percentage,
+            "user_acceptance": self.user_acceptance,
+            "explanation": self.explanation,
+            "created_date": self.created_date.isoformat() if self.created_date else None,
+            "created_by": self.created_by
+        }
+
+
