@@ -68,7 +68,7 @@ def calculate_insurance_risk(make, model):
             }
 
         if rank >= 90:
-            rank = round(random.uniform(80, 90), 2)
+            rank = round(random.uniform(85, 90), 2)
 
         return {
             "risk_rank": int(rank)

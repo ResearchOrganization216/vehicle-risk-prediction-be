@@ -17,3 +17,5 @@ def save_log(levelname, message, ip=None, request_data=None, response_data=None,
         db.session.commit()
     except Exception as e:
         print(f"Failed to save log: {e}")  # Fallback logging
+        return False
+    return True

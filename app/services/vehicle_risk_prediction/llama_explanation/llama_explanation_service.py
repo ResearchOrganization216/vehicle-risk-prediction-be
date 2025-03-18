@@ -8,8 +8,8 @@ client = get_groq_client()
 logger = logging.getLogger(__name__)
 
 # Dummy previous data (since the database is not connected)
-previous_premium = 10000 
-previous_risk_score = 85 
+previous_premium = 158000 
+previous_risk_score = 79.68 
 
 def calculate_total_risk_score(risk_data):
     weights = {
@@ -34,7 +34,7 @@ def calculate_total_risk_score(risk_data):
     return round(total_risk_score, 2)
 
 def calculate_premium_adjustment(current_risk_score):
-    risk_score_change_percentage = ((current_risk_score - previous_risk_score) / previous_risk_score) * 100
+    risk_score_change_percentage = current_risk_score - previous_risk_score
 
     logger.info(f"Risk score change: {risk_score_change_percentage}%")
 
@@ -60,7 +60,7 @@ def calculate_premium_adjustment(current_risk_score):
 
 def generate_lama_explanation(risk_data):
 
-    risk_score_change_percentage = ((calculate_total_risk_score(risk_data) - previous_risk_score) / previous_risk_score) * 100
+    risk_score_change_percentage = calculate_total_risk_score(risk_data) - previous_risk_score
     try:
         # Build the prompt for LLaMA based on risk score change percentage
         if risk_score_change_percentage <= 5:

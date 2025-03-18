@@ -21,7 +21,7 @@ def combined_risk():
             return jsonify({"error": message}), 400
 
         # Prepare API endpoints
-        base_url = "http://35.186.148.98:5005/api/vehicles"
+        base_url = "http://localhost:5005/api/vehicles"
 
 
         # Vehicle Market Price Prediction
