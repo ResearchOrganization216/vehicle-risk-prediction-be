@@ -1,6 +1,9 @@
 import os
 import joblib
 import logging
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 class Config:
 
@@ -39,6 +42,8 @@ models = Config.load_models()
 price_model = models['price_model']
 risk_model = models['risk_model']
 spare_parts_model = models['spare_parts_model']
+
+
 
 # Logging Configuration
 LOG_FILE = "app/logs/app.log"
